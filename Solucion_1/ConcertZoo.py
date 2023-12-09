@@ -1,6 +1,6 @@
 from Solucion_1.Algorithms_Sol1 import Algorithms
 
-class Show:
+class ConcertZoo:
     def __init__(self, n, m, k, verification=True):
         """
         Clase que representa un show.
@@ -155,17 +155,17 @@ class Show:
         print()
         
     def _show_scenes(self, title, scenes):
-      print(f"{title}:")
-      for i, scene in enumerate(scenes, start=1):
-          print(f"Escena {i}: {scene}")
-      print()
-      
+        print(f"{title}:")
+        for i, scene in enumerate(scenes, start=1):
+            print(f"Escena {i}: {scene}")
+        print()
+        
     def _show_parts(self, title, parts):
-      print(f"{title}:")
-      for i, part in enumerate(parts, start=1):
-          print(f"Parte {i}:")
-          self._show_scenes(f"Escena {i}", part)
-      print()
+        print(f"{title}:")
+        for i, part in enumerate(parts, start=1):
+            print(f"Parte {i}:")
+            self._show_scenes(f"Escena {i}", part)
+        print()
     
     @staticmethod
     def scene_grandness_key(scene, animals):
@@ -221,7 +221,7 @@ class Show:
         Returns:
             int: Suma de las grandezas totales de las escenas en la parte.
         """
-        return sum(Show.scene_grandness_key(scene, animals) for scene in part)
+        return sum(ConcertZoo.scene_grandness_key(scene, animals) for scene in part)
 
     def sort_aperture(self):
         """
@@ -232,13 +232,13 @@ class Show:
         """
         # Ordenar cada escena de forma ascendente según la grandeza de sus animales.
         for scene in self.aperture:
-            Algorithms.merge_sort(scene, 0, len(scene) - 1, self.animals, Show.scene_grandness_by_animal)
+            Algorithms.merge_sort(scene, 0, len(scene) - 1, self.animals, ConcertZoo.scene_grandness_by_animal)
 
         # Ordenar cada escena por grandeza total.
-        Algorithms.merge_sort(self.aperture, 0, len(self.aperture) - 1, self.animals, key_func=Show.scene_grandness_key)
+        Algorithms.merge_sort(self.aperture, 0, len(self.aperture) - 1, self.animals, key_func=ConcertZoo.scene_grandness_key)
 
         # Ordenar las escenas por máxima grandeza individual en caso de empate.
-        Algorithms.merge_sort(self.aperture, 0, len(self.aperture) - 1, self.animals, key_func=Show.max_animal_grandness_key)
+        Algorithms.merge_sort(self.aperture, 0, len(self.aperture) - 1, self.animals, key_func=ConcertZoo.max_animal_grandness_key)
 
     def sort_rest_of_show(self):
         """
@@ -250,16 +250,16 @@ class Show:
         for part in self.rest_of_show:
             # Ordenar cada escena de cada parte de forma ascendente según la grandeza de sus animales.
             for scene in part:
-                Algorithms.merge_sort(scene, 0, len(scene) - 1, self.animals, Show.scene_grandness_by_animal)
+                Algorithms.merge_sort(scene, 0, len(scene) - 1, self.animals, ConcertZoo.scene_grandness_by_animal)
 
             # Ordenar cada escena por grandeza total.
-            Algorithms.merge_sort(part, 0, len(part) - 1, self.animals, key_func=Show.scene_grandness_key)
+            Algorithms.merge_sort(part, 0, len(part) - 1, self.animals, key_func=ConcertZoo.scene_grandness_key)
 
             # Ordenar las escenas por máxima grandeza individual en caso de empate.
-            Algorithms.merge_sort(part, 0, len(part) - 1, self.animals, key_func=Show.max_animal_grandness_key)
+            Algorithms.merge_sort(part, 0, len(part) - 1, self.animals, key_func=ConcertZoo.max_animal_grandness_key)
 
         # Ordenar cada parte por su grandeza total de parte que es la suma de las grandezas totales de la escena.
-        Algorithms.merge_sort(self.rest_of_show, 0, len(self.rest_of_show) - 1, self.animals, key_func=Show.part_grandness_key)
+        Algorithms.merge_sort(self.rest_of_show, 0, len(self.rest_of_show) - 1, self.animals, key_func=ConcertZoo.part_grandness_key)
 
     def show_sorted_rest_of_show(self):
         """

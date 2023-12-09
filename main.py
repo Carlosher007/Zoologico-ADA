@@ -11,7 +11,7 @@
 # Para ordenar las escenas y las partes podemos utilizar el algoritmo de ordenamiento por mezcla (merge sort) con algunas modificaciones, las cuales no afectaran la complejidad del algoritmo
 
 
-from Solucion_1.Show import Show
+from Solucion_1.ConcertZoo import ConcertZoo
 
 # ---------------------------- VARIABLES INICIALES --------------------------- #
 n = 6
@@ -42,13 +42,13 @@ rest_of_show = [
 
 
 if __name__ == "__main__":
-  show = Show(n, m, k)
-  show.add_animals(animals)
-  show.add_aperture(aperture)
-  show.add_rest_of_show(rest_of_show)
+  concert = ConcertZoo(n, m, k)
+  concert.add_animals(animals)
+  concert.add_aperture(aperture)
+  concert.add_rest_of_show(rest_of_show)
 
-  show.show()
+  concert.show()
 
   #  ordenamos la paertura y la mostrmaos
   # show.show_sorted_aperture()
-  show.show_sorted()
+  concert.show_sorted()
