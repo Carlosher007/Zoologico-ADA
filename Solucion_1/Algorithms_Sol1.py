@@ -155,6 +155,23 @@ class Methods:
             if list[i] > max_element:
                 max_element = list[i]
         return max_element
+    
+    def min(list: list) -> 'number':
+        """
+        Find the minimum element in a list of numbers.
+
+        Args:
+            list (list): List of numbers.
+
+        Returns:
+            'number': Minimum element.
+        """
+        min_element = list[0]
+
+        for i in range(Methods.len(list)):
+            if list[i] < min_element:
+                min_element = list[i]
+        return min_element
 
     @staticmethod
     def reverse(list: list) -> list:

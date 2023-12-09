@@ -1,4 +1,5 @@
-from Solucion_1.Algorithms_Sol1 import Algorithms
+import math
+from Solucion_1.Algorithms_Sol1 import Algorithms, Methods
 
 class ConcertZoo:
     def __init__(self, n, m, k, verification=True):
@@ -21,8 +22,8 @@ class ConcertZoo:
         self.rest_of_show = None
 
     def _verify(self, condition, error_message):
-      if self.verification:
-        assert condition, error_message
+        if self.verification:
+            assert condition, error_message
 
     def add_animals(self, animals):
         """
@@ -179,7 +180,7 @@ class ConcertZoo:
         Returns:
             int: Suma de las grandezas de los animales en la escena.
         """
-        return sum(animals[animal] for animal in scene)
+        return Methods.sum(animals[animal] for animal in scene)
 
     @staticmethod
     def max_animal_grandness_key(scene, animals):
@@ -193,7 +194,7 @@ class ConcertZoo:
         Returns:
             int: Máxima grandeza individual en la escena.
         """
-        return max(animals[animal] for animal in scene)
+        return Methods.max([animals[animal] for animal in scene])
 
     @staticmethod
     def scene_grandness_by_animal(animal, animals):
@@ -221,7 +222,7 @@ class ConcertZoo:
         Returns:
             int: Suma de las grandezas totales de las escenas en la parte.
         """
-        return sum(ConcertZoo.scene_grandness_key(scene, animals) for scene in part)
+        return Methods.sum(ConcertZoo.scene_grandness_key(scene, animals) for scene in part)
 
     def sort_aperture(self):
         """
@@ -291,3 +292,111 @@ class ConcertZoo:
         self.sort_rest_of_show()
         self.sort_aperture()
         self.show()
+    
+    def most_appearances(self):
+        """
+        Encuentra el animal o los animales que aparecen en la mayor cantidad de escenas y devuelve el número de apariciones.
+
+        Returns:
+            list, int: Lista de animales que aparecen en la mayor cantidad de escenas y el número de apariciones.
+        """
+        # Paso 1: Inicializar un diccionario vacío para contar las apariciones de cada animal.
+        appearances = {}
+
+        # Paso 2: Iterar sobre todas las escenas en la apertura y el resto del espectáculo.
+        for scene in self.aperture + [scene for part in self.rest_of_show for scene in part]:
+            # Paso 3: Para cada escena, iterar sobre todos los animales en la escena.
+            for animal in scene:
+                # Paso 4: Incrementar el conteo para cada animal en el diccionario.
+                if animal in appearances:
+                    appearances[animal] += 1
+                else:
+                    appearances[animal] = 1
+
+        # Paso 5: Encontrar el número máximo de apariciones.
+        max_appearances = Methods.max(list(appearances.values()))
+
+        # Paso 6: Iterar sobre el diccionario y agregar todos los animales con el número máximo de apariciones a una lista.
+        most_appearing_animals = [animal for animal, count in appearances.items() if count == max_appearances]
+
+        # Paso 7: Devolver la lista de animales y el número máximo de apariciones.
+        return most_appearing_animals, max_appearances
+
+    def least_appearances(self):
+        """
+        Encuentra el animal o los animales que aparecen en la menor cantidad de escenas y devuelve el número de apariciones.
+
+        Returns:
+            list, int: Lista de animales que aparecen en la menor cantidad de escenas y el número de apariciones.
+        """
+        appearances = {}
+
+        for scene in self.aperture + [scene for part in self.rest_of_show for scene in part]:
+            for animal in scene:
+                if animal in appearances:
+                    appearances[animal] += 1
+                else:
+                    appearances[animal] = 1
+
+        min_appearances = Methods.min(list(appearances.values()))
+
+        least_appearing_animals = [animal for animal, count in appearances.items() if count == min_appearances]
+
+        return least_appearing_animals, min_appearances
+
+    def max_grandeur_scene(self):
+        """
+        Encuentra la escena de mayor grandeza total en la apertura.
+
+        Returns:
+            list: La escena de mayor grandeza total en la apertura.
+        """
+        max_grandeur = 0
+        max_grandeur_scene = None
+
+        for scene in self.aperture:
+            grandeur_sum = ConcertZoo.scene_grandness_key(scene, self.animals)
+            if grandeur_sum > max_grandeur:
+                max_grandeur = grandeur_sum
+                max_grandeur_scene = scene
+
+        return max_grandeur_scene
+    
+    def min_grandeur_scene(self):
+        """
+        Encuentra la escena de menor grandeza total en la apertura.
+
+        Returns:
+            list: La escena de menor grandeza total en la apertura.
+        """
+        min_grandeur = float('inf')
+        min_grandeur_scene = None
+
+        for scene in self.aperture:
+            grandeur_sum = ConcertZoo.scene_grandness_key(scene, self.animals)
+            if grandeur_sum < min_grandeur:
+                min_grandeur = grandeur_sum
+                min_grandeur_scene = scene
+
+        return min_grandeur_scene
+    
+    def average_grandeur(self):
+        """
+        Calcula el promedio de grandeza de todo el espectáculo.
+
+        Args:
+            m (int): Número de escenas en la apertura.
+            k (int): Número de animales por escena.
+
+        Returns:
+            float: Promedio de grandeza de todo el espectáculo.
+        """
+        total_grandeur = 0
+
+        for scene in self.aperture:
+            total_grandeur += 2 * ConcertZoo.scene_grandness_key(scene, self.animals)
+
+        average = total_grandeur / ((self.m - 1) * self.k * 2)
+        rounded_average = math.ceil(average * 100) / 100 
+
+        return rounded_average

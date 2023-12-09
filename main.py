@@ -49,6 +49,25 @@ if __name__ == "__main__":
 
   concert.show()
 
-  #  ordenamos la paertura y la mostrmaos
-  # show.show_sorted_aperture()
   concert.show_sorted()
+  
+  # EL que participo mas veces
+  most_appearing_animals, max_appearances = concert.most_appearances()
+  print(f"Animales que aparecen en la mayor cantidad de escenas: {most_appearing_animals}")
+  print(f"Número de apariciones: {max_appearances}")
+  print()
+  
+  # El que participo menos veces
+  least_appearing_animals, min_appearances = concert.least_appearances()
+  print(f"Animales que aparecen en la menor cantidad de escenas: {least_appearing_animals}")
+  print(f"Número de apariciones: {min_appearances}")
+  print()
+  
+  max_grandeur_scene = concert.max_grandeur_scene()
+  print(f"Escena de mayor grandeza: {max_grandeur_scene}")
+
+  min_grandeur_scene = concert.min_grandeur_scene()
+  print(f"Escena de menor grandeza: {min_grandeur_scene}")
+  
+  average_grandeur = concert.average_grandeur()
+  print(f"Grandeza promedio de todo el espectaculo: {average_grandeur}")
