@@ -1,20 +1,13 @@
-# ---------------------------------------------------------------------------- #
-#                                  SOLUCIÓN 1                                  #
-# ---------------------------------------------------------------------------- #
-
-# --------- INFORMACIÓN ACERCA DE LAS ESTRUCTURAS DE DATOS A UTILIZAR -------- #
-# Para almacenar la información de los animales se utilizará un diccionario
-# Para almacenar las escenas se utilizaran las listas. Cada escena será una lista de 3 elementos
-# Para almacenar las partes se utilizaran las listas. Cada parte será una lista de escenas
-
-# -------------- INFORMACIÓN ACERCA DE LOS ALGORITMOS A UTILIZAR ------------- #
-# Para ordenar las escenas y las partes podemos utilizar el algoritmo de ordenamiento por mezcla (merge sort) con algunas modificaciones, las cuales no afectaran la complejidad del algoritmo
-
-
 import random
-from Solucion_1.ConcertZoo import ConcertZoo
+import time
 
+import numpy as np
+import matplotlib.pyplot as plt
+from tabulate import tabulate
+
+from Solucion_1.ConcertZoo import ConcertZoo
 # ---------------------------- VARIABLES INICIALES --------------------------- #
+
 
 def version1 ():
   m = 3
@@ -77,7 +70,7 @@ def version2 ():
   
   return { 'm': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show }
 
-def version3():
+def version4():
     m = 27
     n = 30
     k = 6
@@ -116,7 +109,7 @@ def version3():
 
     return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
   
-def version4():
+def version3():
     m = 18
     n = 21
     k = 6
@@ -165,50 +158,61 @@ def version4():
     return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
 
 
-def solution_1 (version):
-  concert = ConcertZoo( version['n'], version['m'], version['k'] )
-  concert.add_animals( version['animals'] )
-  concert.add_aperture( version['aperture'] )
-  concert.add_rest_of_show( version['rest_of_show'])
+def measure_execution_time(versions, function_to_test):
+    times = []
+    for version in versions:
+        concert = ConcertZoo(version['n'], version['m'], version['k'])
+        concert.add_animals(version['animals'])
+        concert.add_aperture(version['aperture'])
+        concert.add_rest_of_show(version['rest_of_show'])
 
-  concert.show()
+        start_time = time.time()
+        function_to_test(concert)
+        end_time = time.time()
 
-  concert.show_sorted()
-  
-  # EL que participo mas veces
-  most_appearing_animals, max_appearances = concert.most_appearances()
-  print(f"Animales que aparecen en la mayor cantidad de escenas: {most_appearing_animals}")
-  print(f"Número de apariciones: {max_appearances}")
-  print()
-  
-  # El que participo menos veces
-  least_appearing_animals, min_appearances = concert.least_appearances()
-  print(f"Animales que aparecen en la menor cantidad de escenas: {least_appearing_animals}")
-  print(f"Número de apariciones: {min_appearances}")
-  print()
-  
-  # La escena de mayor grandeza
-  max_grandeur_scene = concert.max_grandeur_scene()
-  print(f"Escena de mayor grandeza: {max_grandeur_scene}")
+        execution_time = end_time - start_time
+        times.append(execution_time)
 
-  # La escena de menor grandeza
-  min_grandeur_scene = concert.min_grandeur_scene()
-  print(f"Escena de menor grandeza: {min_grandeur_scene}")
-  
-  # La grandeza promedio de todo el espectaculo
-  average_grandeur = concert.average_grandeur()
-  print(f"Grandeza promedio de todo el espectaculo: {average_grandeur}")
+    return times
 
 
+def plot_execution_times(versions, function_to_test):
+    sizes = [(version['m'] - 1) * version['k'] for version in versions]
+    times = measure_execution_time(versions, function_to_test)
+
+    plt.plot(sizes, times, marker='o', label='Actual Performance')
+    
+    # Añadir línea de ajuste
+    z = np.polyfit(sizes, times, 1)
+    p = np.poly1d(z)
+    plt.plot(sizes, p(sizes), 'r--', label='Fit Line')
+    
+    
+
+    plt.title('Execution Time vs Input Size')
+    plt.xlabel('Input Size')
+    plt.ylabel('Execution Time (s)')
+
+    plt.legend()
+    plt.show()
+    
 if __name__ == "__main__":
-  solution = 1
-  version = 3
-  if(solution == 1):
-    if(version == 1):
-      solution_1( version1() )
-    elif(version == 2):
-      solution_1(version2())
-    elif(version == 3):
-      solution_1(version3())
-    elif(version == 4):
-      solution_1(version4())
+    versions = [version1(), version2(), version3(), version4()]
+    
+    # Funciones que deseas probar
+    functions_to_test = [
+        ConcertZoo.sort_aperture,
+        ConcertZoo.sort_rest_of_show,
+        ConcertZoo.most_appearances,
+        ConcertZoo.least_appearances,
+        ConcertZoo.max_grandeur_scene,
+        ConcertZoo.min_grandeur_scene,
+        ConcertZoo.average_grandeur,
+    ]
+
+    for function in functions_to_test:
+        header = f"Tiempos de la solución para {function.__name__}:"
+        times = measure_execution_time(versions, function)
+        table = tabulate(enumerate(times, start=1), headers=["Ejecución", "Tiempo (s)"], tablefmt="pretty")
+        print(f"\n{header}\n{table}")
+

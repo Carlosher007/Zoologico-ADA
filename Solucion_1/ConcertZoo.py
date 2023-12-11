@@ -269,7 +269,7 @@ class ConcertZoo:
         Returns:
             None
         """
-        self.sort_rest_of_show()
+        self.sort_rest_of_show()    
         self.show_rest_of_show()
 
     def show_sorted_aperture(self):
@@ -303,18 +303,18 @@ class ConcertZoo:
         # Paso 1: Inicializar un diccionario vacío para contar las apariciones de cada animal.
         appearances = {}
 
-        # Paso 2: Iterar sobre todas las escenas en la apertura y el resto del espectáculo.
-        for scene in self.aperture + [scene for part in self.rest_of_show for scene in part]:
+        # Paso 2: Iterar solo sobre las escenas en la apertura.
+        for scene in self.aperture:
             # Paso 3: Para cada escena, iterar sobre todos los animales en la escena.
             for animal in scene:
-                # Paso 4: Incrementar el conteo para cada animal en el diccionario.
+                # Paso 4: Incrementar el conteo para cada animal en el diccionario en 2 unidades.
                 if animal in appearances:
-                    appearances[animal] += 1
+                    appearances[animal] += 2
                 else:
-                    appearances[animal] = 1
+                    appearances[animal] = 2
 
         # Paso 5: Encontrar el número máximo de apariciones.
-        max_appearances = Methods.max(list(appearances.values()))
+        max_appearances = max(appearances.values())
 
         # Paso 6: Iterar sobre el diccionario y agregar todos los animales con el número máximo de apariciones a una lista.
         most_appearing_animals = [animal for animal, count in appearances.items() if count == max_appearances]
@@ -331,12 +331,12 @@ class ConcertZoo:
         """
         appearances = {}
 
-        for scene in self.aperture + [scene for part in self.rest_of_show for scene in part]:
+        for scene in self.aperture:
             for animal in scene:
                 if animal in appearances:
-                    appearances[animal] += 1
+                    appearances[animal] += 2
                 else:
-                    appearances[animal] = 1
+                    appearances[animal] = 2
 
         min_appearances = Methods.min(list(appearances.values()))
 
@@ -383,10 +383,6 @@ class ConcertZoo:
     def average_grandeur(self):
         """
         Calcula el promedio de grandeza de todo el espectáculo.
-
-        Args:
-            m (int): Número de escenas en la apertura.
-            k (int): Número de animales por escena.
 
         Returns:
             float: Promedio de grandeza de todo el espectáculo.
