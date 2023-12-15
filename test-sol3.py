@@ -5,43 +5,53 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 
-from Solucion_1.ConcertZoo import ConcertZoo
+from Solucion_3.ConcertZoo3 import ConcertZoo3
 
 def version_generalizada(m, k):
     # n es constante
     n = 9
 
     # Definir la lista de animales
-    animals = {
-        'Ca': 1, 'Lo': 2, 'Cai': 3, 'Bo': 4,
-        'Co': 5, 'Ce': 6, 'Pa': 7, 'Ti': 8, 'Le': 9,
-    }
+    animals = [
+        ['An', 1],
+        ['Bo', 2],
+        ['Ca', 3],
+        ['Do', 4],
+        ['El', 5],
+        ['Fl', 6],
+        ['Ga', 7],
+        ['Ho', 8],
+        ['Ig', 9],
+    ]
     
-    # Convertir las claves del diccionario en una lista
-    animal_keys = list(animals.keys())
-
     # Inicializar la apertura y el resto del show
     aperture = []
     rest_of_show = []
 
     # Generar (m-1)*k escenas para la apertura
-    for _ in range((m-1)*k):
-        scene = random.sample(animal_keys, 3)
-        aperture.append(scene)
-
+    for _ in range((m - 1) * k):
+        # Seleccionar 3 animales aleatorios de la lista 'animals'
+        scene_animals = random.sample(animals, 3)
+        
+        # Extraer los nombres de los animales seleccionados
+        scene_names = [animal[0] for animal in scene_animals]
+        
+        # Agregar la escena a la apertura
+        aperture.append(scene_names)
+    
     # Crear una lista auxiliar igual a la apertura
     aux_aperture = aperture.copy()
 
     # Generar m-1 partes de k escenas cada una para el resto del show
     for _ in range(m-1):
-      part = []
-      for _ in range(k):
-        # Tomar una escena aleatoria de la lista auxiliar y agregarla al resto del show
-        scene = random.choice(aux_aperture)
-        aux_aperture.remove(scene)
-        part.append(scene)
+        part = []
+        for _ in range(k):
+            # Tomar una escena aleatoria de la lista auxiliar y agregarla al resto del show
+            scene = random.choice(aux_aperture)
+            aux_aperture.remove(scene)
+            part.append(scene)
 
-      rest_of_show.append(part)
+        rest_of_show.append(part)
 
     # Devolver el resultado como un diccionario
     result = {
@@ -59,7 +69,7 @@ def version_generalizada(m, k):
 def measure_execution_time(versions, function_to_test):
     times = []
     for version in versions:
-        concert = ConcertZoo(version['n'], version['m'], version['k'])
+        concert = ConcertZoo3(version['n'], version['m'], version['k'])
         concert.add_animals(version['animals'])
         concert.add_aperture(version['aperture'])
         concert.add_rest_of_show(version['rest_of_show'])
@@ -112,21 +122,21 @@ if __name__ == "__main__":
     
     # Funciones que deseas probar
     functions_to_test = [
-        ConcertZoo.sort_aperture,
-        ConcertZoo.sort_rest_of_show,
-        ConcertZoo.most_appearances,
-        ConcertZoo.least_appearances,
-        ConcertZoo.max_grandeur_scene,
-        ConcertZoo.min_grandeur_scene,
-        ConcertZoo.average_grandeur,
+        ConcertZoo3.sort_aperture,
+        ConcertZoo3.sort_rest_of_show,
+        ConcertZoo3.most_appearances,
+        ConcertZoo3.least_appearances,
+        ConcertZoo3.max_grandeur_scene,
+        ConcertZoo3.min_grandeur_scene,
+        ConcertZoo3.average_grandeur,
     ]
 
     # for function in functions_to_test:
-    header = f"Tiempos de la solución para {ConcertZoo.average_grandeur.__name__}:"
-    times = measure_execution_time(versions, ConcertZoo.average_grandeur)
+    header = f"Tiempos de la solución para {ConcertZoo3.average_grandeur.__name__}:"
+    times = measure_execution_time(versions, ConcertZoo3.average_grandeur)
     table = tabulate(enumerate(times, start=1), headers=["Ejecución", "Tiempo (s)"], tablefmt="pretty")
     print(f"\n{header}\n{table}")
     
     # Gráfica de tiempos de ejecución
-    plot_execution_times(versions, ConcertZoo.average_grandeur, times)
+    plot_execution_times(versions, ConcertZoo3.average_grandeur, times)
 

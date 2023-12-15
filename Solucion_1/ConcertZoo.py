@@ -1,6 +1,6 @@
 import math
 import random
-from Solucion_1.Algorithms_Sol1 import Algorithms, Methods
+from Algorithms.Algorithms import Algorithms, Methods
 
 class ConcertZoo:
     def __init__(self, n, m, k, verification=True):

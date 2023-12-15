@@ -1,5 +1,5 @@
 import math
-from Solucion_2.Algorithms_Sol1 import Algorithms, Methods
+from Algorithms.Algorithms import Algorithms, Methods
 
 class ConcertZoo2:
     def __init__(self, n, m, k, verification=True):
