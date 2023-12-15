@@ -406,34 +406,6 @@ def version3_sol3():
     n = 30
     k = 6
 
-    # def crear_n_animales(n):
-    #     letras_disponibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-
-    #     n = min(n, len(letras_disponibles))
-
-    #     letras_seleccionadas = random.sample(letras_disponibles, n)
-
-    #     animales_creados = [[letra, i + 1] for i, letra in enumerate(letras_seleccionadas)]
-
-    #     return animales_creados
-
-    # animals = crear_n_animales(n)
-
-    # aperture = []
-    # for i in range(m - 1):
-    #     for j in range(k):
-    #         scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
-    #         aperture.append(scene)
-
-    # rest_of_show = []
-    # for i in range(m - 1):
-    #     part = []
-    #     for j in range(k):
-    #         scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
-    #         part.append(scene)
-    #     rest_of_show.append(part)
-
-    # return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
     def crear_n_animales(n):
         letras_disponibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 
@@ -449,14 +421,15 @@ def version3_sol3():
 
     aperture = []
     for i in range(m - 1):
-        scene = [list(animals[x]) for x in range(i * 3, min((i + 1) * 3, n))]
-        aperture.append(scene)
+        for j in range(k):
+            scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
+            aperture.append(scene)
 
     rest_of_show = []
     for i in range(m - 1):
         part = []
         for j in range(k):
-            scene = [list(animals[x]) for x in range((i * k + j) * 3, min((i * k + j + 1) * 3, n))]
+            scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
             part.append(scene)
         rest_of_show.append(part)
 

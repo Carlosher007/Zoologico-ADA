@@ -58,11 +58,7 @@ class ConcertZoo3:
         # self._check_animals_in_aperture(aperture)
         # # Guardar la apertura.
         # self.aperture = aperture
-         # Verificar que los animales ya se hayan agregado.
-        self._verify(self.animals is not None, "Debe agregar animales antes de la apertura")
-        # Verificar que cada animal en la apertura esté en la lista de animales.
         self._check_animals_in_aperture(aperture)
-        # Guardar la apertura.
         self.aperture = aperture
 
     def _check_animals_in_aperture(self, aperture):
@@ -78,16 +74,8 @@ class ConcertZoo3:
         # for scene in aperture:
         #   self._verify(all(animal in self.animals for animal in scene), f"Un animal en la apertura no está en la lista de animales")
         for scene in aperture:
-        # Verificar que todos los animales en la escena estén en la lista de animales.
             for animal in scene:
-                # Convertir el animal en la apertura a una cadena para comparar con la lista de animales.
-                if isinstance(animal, tuple):
-                    animal_str = animal[0]
-                else:
-                    animal_str = animal
-
-                animal_in_list = any(animal_str == a[0] if isinstance(a, tuple) else animal_str == a for a in   self.animals)
-                self._verify(animal_in_list, f"El animal '{animal}' en la apertura no está en la lista de   animales")
+                self._verify(any(animal == a[0] for a in self.animals), f"Un animal en la apertura no está en la lista de animales")
 
 
     def add_rest_of_show(self, rest_of_show):
@@ -121,19 +109,11 @@ class ConcertZoo3:
         Returns:
             None
         """
-        # Convertir todas las escenas de la apertura a listas para que sean comparables.
-        aperture_scenes = [set(scene) for scene in self.aperture]
-    
+        # Convertir todas las escenas de la apertura y el resto del show a conjuntos.
+        aperture_set = {frozenset(scene) for scene in self.aperture}
+        rest_of_show_set = {frozenset(scene) for part in rest_of_show for scene in part}
         # Verificar que cada escena en cada parte del resto del show esté en la apertura.
-        for part in rest_of_show:
-            for scene in part:
-                scene_set = set(scene)
-                self._verify(scene_set in aperture_scenes, "Cada escena en las partes debe estar en la apertura")
-
-        # Verificar que cada escena en cada parte del resto del show esté en la apertura.
-        for part in rest_of_show:
-            for scene in part:
-                self._verify(scene in self.aperture, "Cada escena en las partes debe estar en la apertura")
+        self._verify(all(scene_set in aperture_set for scene_set in rest_of_show_set), "Cada escena en las partes debe estar en la apertura")
 
 
     def _check_number_of_scenes_in_parts(self, rest_of_show):
