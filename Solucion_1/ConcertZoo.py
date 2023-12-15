@@ -334,7 +334,7 @@ class ConcertZoo:
                     appearances[animal] = 2
 
         # Paso 5: Encontrar el número máximo de apariciones.
-        max_appearances = max(appearances.values())
+        max_appearances = Methods.max(list(appearances.values()))
 
         # Paso 6: Iterar sobre el diccionario y agregar todos los animales con el número máximo de apariciones a una lista.
         most_appearing_animals = [animal for animal, count in appearances.items() if count == max_appearances]

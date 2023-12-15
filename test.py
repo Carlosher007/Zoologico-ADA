@@ -70,92 +70,53 @@ def version2 ():
   
   return { 'm': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show }
 
-def version4():
-    m = 27
-    n = 30
-    k = 6
+def version_generalizada(m, k):
+    # n es constante
+    n = 9
 
-    def crear_n_animales(n):
-      letras_disponibles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-      
-      # Verificar que n no sea mayor que la cantidad de letras disponibles
-      n = min(n, len(letras_disponibles))
-
-      # Tomar n letras distintas al azar
-      letras_seleccionadas = random.sample(letras_disponibles, n)
-
-      # Crear un diccionario de animales con símbolos únicos y grandeza asignada
-      animales_creados = {letra: i + 1 for i, letra in enumerate(letras_seleccionadas)}
-
-      return animales_creados
-
-    animals = crear_n_animales(n)
-  
-    # Crear la apertura con (m-1)*k escenas, donde en cada escena participan 3 animales distintos
-    aperture = []
-    for i in range(m - 1):
-        for j in range(k):
-            scene = [list(animals.keys())[x % len(animals)] for x in range(j * 3, (j + 1) * 3)]
-            aperture.append(scene)
-
-    # Crear el resto del show con m-1 partes de k escenas cada una, y en cada escena participan 3 animales distintos
-    rest_of_show = []
-    for i in range(m - 1):
-        part = []
-        for j in range(k):
-            scene = [list(animals.keys())[x % len(animals)] for x in range(j * 3, (j + 1) * 3)]
-            part.append(scene)
-        rest_of_show.append(part)
-
-    return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
-  
-def version3():
-    m = 18
-    n = 21
-    k = 6
-
-    # Definir nombres de animales y asignarles números para representar su grandeza
+    # Definir la lista de animales
     animals = {
-        'An': 1,
-        'Bo': 2,
-        'Ca': 3,
-        'Do': 4,
-        'El': 5,
-        'Fl': 6,
-        'Ga': 7,
-        'Ho': 8,
-        'Ig': 9,
-        'Jo': 10,
-        'Ki': 11,
-        'La': 12,
-        'Mi': 13,
-        'Nu': 14,
-        'Ow': 15,
-        'Pa': 16,
-        'Qu': 17,
-        'Ro': 18,
-        'Sn': 19,
-        'Tu': 20,
-        'Tr': 20,
+        'Ca': 1, 'Lo': 2, 'Cai': 3, 'Bo': 4,
+        'Co': 5, 'Ce': 6, 'Pa': 7, 'Ti': 8, 'Le': 9,
+    }
+    
+    # Convertir las claves del diccionario en una lista
+    animal_keys = list(animals.keys())
+
+    # Inicializar la apertura y el resto del show
+    aperture = []
+    rest_of_show = []
+
+    # Generar (m-1)*k escenas para la apertura
+    for _ in range((m-1)*k):
+        scene = random.sample(animal_keys, 3)
+        aperture.append(scene)
+
+    # Crear una lista auxiliar igual a la apertura
+    aux_aperture = aperture.copy()
+
+    # Generar m-1 partes de k escenas cada una para el resto del show
+    for _ in range(m-1):
+      part = []
+      for _ in range(k):
+        # Tomar una escena aleatoria de la lista auxiliar y agregarla al resto del show
+        scene = random.choice(aux_aperture)
+        aux_aperture.remove(scene)
+        part.append(scene)
+
+      rest_of_show.append(part)
+
+    # Devolver el resultado como un diccionario
+    result = {
+        'm': m,
+        'n': n,
+        'k': k,
+        'animals': animals,
+        'aperture': aperture,
+        'rest_of_show': rest_of_show,
     }
 
-    # Crear la apertura con (m-1)*k escenas, donde en cada escena participan 3 animales distintos
-    aperture = []
-    for i in range(m - 1):
-        for j in range(k):
-            scene = [list(animals.keys())[x] for x in range(j * 3, (j + 1) * 3)]
-            aperture.append(scene)
-
-    # Crear el resto del show con m-1 partes de k escenas cada una, y en cada escena participan 3 animales distintos
-    rest_of_show = []
-    for i in range(m - 1):
-        part = []
-        for j in range(k):
-            scene = [list(animals.keys())[x] for x in range(j * 3, (j + 1) * 3)]
-            part.append(scene)
-        rest_of_show.append(part)
-
-    return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
+    return result
 
 
 def measure_execution_time(versions, function_to_test):
@@ -176,7 +137,8 @@ def measure_execution_time(versions, function_to_test):
     return times
 
 
-def plot_execution_times(versions, function_to_test):
+
+def plot_execution_times(versions, function_to_test, times):
     sizes = [(version['m'] - 1) * version['k'] for version in versions]
     times = measure_execution_time(versions, function_to_test)
 
@@ -185,19 +147,30 @@ def plot_execution_times(versions, function_to_test):
     # Añadir línea de ajuste
     z = np.polyfit(sizes, times, 1)
     p = np.poly1d(z)
-    plt.plot(sizes, p(sizes), 'r--', label='Fit Line')
+    # plt.plot(sizes, p(sizes), 'r--', label='Fit Line')
     
     
 
     plt.title('Execution Time vs Input Size for ' + function_to_test.__name__) 
-    plt.xlabel('Input Size')
+    plt.xlabel('Input Size: (m-1)*k')
     plt.ylabel('Execution Time (s)')
 
     plt.legend()
     plt.show()
-    
+
+
+
 if __name__ == "__main__":
-    versions = [version1(), version2(), version3(), version4()]
+    # Generamos  versiones de prueba con version_prueba, por ahroa solo vamos a viarar m, k se queda igual  a 3
+    versions = []
+    m_initial = 2
+    k_initial = 1
+    
+    # funcion para ir agregando versiones, m va avanzando 3 en 3 y n 2 en 2
+    for i in range(1, 71):
+        versions.append(version_generalizada(m_initial, k_initial))
+        m_initial += 2
+        k_initial += 1
     
     # Funciones que deseas probar
     functions_to_test = [
@@ -210,13 +183,11 @@ if __name__ == "__main__":
         ConcertZoo.average_grandeur,
     ]
 
-    for function in functions_to_test:
-        header = f"Tiempos de la solución para {function.__name__}:"
-        times = measure_execution_time(versions, function)
-        table = tabulate(enumerate(times, start=1), headers=["Ejecución", "Tiempo (s)"], tablefmt="pretty")
-        print(f"\n{header}\n{table}")
-        
-        # Gráfica de tiempos de ejecución
-        plot_execution_times(versions, function)
-
-
+    # for function in functions_to_test:
+    header = f"Tiempos de la solución para {ConcertZoo.aver.__name__}:"
+    times = measure_execution_time(versions, ConcertZoo.aver)
+    table = tabulate(enumerate(times, start=1), headers=["Ejecución", "Tiempo (s)"], tablefmt="pretty")
+    print(f"\n{header}\n{table}")
+    
+    # Gráfica de tiempos de ejecución
+    plot_execution_times(versions, ConcertZoo.aver, times)
