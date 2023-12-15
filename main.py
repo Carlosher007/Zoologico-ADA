@@ -173,7 +173,7 @@ def version4():
 # ---------------------------------------------------------------------------- #
 
 # --------- INFORMACIÓN ACERCA DE LAS ESTRUCTURAS DE DATOS A UTILIZAR -------- #
-# Para almacenar la información de los animales se utilizará un diccionario
+# Para almacenar la información de los animales se utilizará una lista de tuplas
 # Para almacenar las escenas se utilizaran las listas. Cada escena será una lista de 3 elementos
 # Para almacenar las partes se utilizaran las listas. Cada parte será una lista de escenas
 
@@ -335,7 +335,19 @@ def version4_sol2():
 
     return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
 
-# /////////////////////////
+# ---------------------------------------------------------------------------- #
+#                                  SOLUCIÓN 3                                  #
+# ---------------------------------------------------------------------------- #
+
+# --------- INFORMACIÓN ACERCA DE LAS ESTRUCTURAS DE DATOS A UTILIZAR -------- #
+# Para almacenar la información de los animales se utilizará una lista de listas
+# Para almacenar las escenas se utilizaran las listas. Cada escena será una lista de 3 elementos
+# Para almacenar las partes se utilizaran las listas. Cada parte será una lista de escenas
+
+# -------------- INFORMACIÓN ACERCA DE LOS ALGORITMOS A UTILIZAR ------------- #
+# Para ordenar las escenas y las partes podemos utilizar el algoritmo de ordenamiento por mezcla (merge sort) con algunas modificaciones, las cuales no afectaran la complejidad del algoritmo
+
+# ---------------------------- VARIABLES INICIALES --------------------------- #
 def version1_sol3():
     m = 3
     n = 6
@@ -584,7 +596,7 @@ def solution_3 (version):
 
 if __name__ == "__main__":
     solution =3
-    version = 3
+    version = 2
     if(solution == 1):
         if(version == 1):
             solution_1(version1() )
