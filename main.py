@@ -415,7 +415,7 @@ def version2_sol3():
 
 def version3_sol3():
     m = 27
-    n = 30
+    n = 15
     k = 6
 
     def crear_n_animales(n):
@@ -430,19 +430,34 @@ def version3_sol3():
         return animales_creados
 
     animals = crear_n_animales(n)
-
+    
+    # Inicializar la apertura y el resto del show
     aperture = []
-    for i in range(m - 1):
-        for j in range(k):
-            scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
-            aperture.append(scene)
-
     rest_of_show = []
-    for i in range(m - 1):
+    
+    # Generar (m-1)*k escenas para la apertura
+    for _ in range((m - 1) * k):
+        # Seleccionar 3 animales aleatorios de la lista 'animals'
+        scene_animals = random.sample(animals, 3)
+        
+        # Extraer los nombres de los animales seleccionados
+        scene_names = [animal[0] for animal in scene_animals]
+        
+        # Agregar la escena a la apertura
+        aperture.append(scene_names)
+    
+    # Crear una lista auxiliar igual a la apertura
+    aux_aperture = aperture.copy()
+
+    # Generar m-1 partes de k escenas cada una para el resto del show
+    for _ in range(m-1):
         part = []
-        for j in range(k):
-            scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
+        for _ in range(k):
+            # Tomar una escena aleatoria de la lista auxiliar y agregarla al resto del show
+            scene = random.choice(aux_aperture)
+            aux_aperture.remove(scene)
             part.append(scene)
+
         rest_of_show.append(part)
 
     return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
@@ -473,21 +488,36 @@ def version4_sol3():
         ['Ro', 18],
         ['Sn', 19],
         ['Tu', 20],
-        ['Tr', 20],
+        ['Tr', 21],
     ]
 
+    # Inicializar la apertura y el resto del show
     aperture = []
-    for i in range(m - 1):
-        for j in range(k):
-            scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
-            aperture.append(scene)
-
     rest_of_show = []
-    for i in range(m - 1):
+    
+    # Generar (m-1)*k escenas para la apertura
+    for _ in range((m - 1) * k):
+        # Seleccionar 3 animales aleatorios de la lista 'animals'
+        scene_animals = random.sample(animals, 3)
+        
+        # Extraer los nombres de los animales seleccionados
+        scene_names = [animal[0] for animal in scene_animals]
+        
+        # Agregar la escena a la apertura
+        aperture.append(scene_names)
+    
+    # Crear una lista auxiliar igual a la apertura
+    aux_aperture = aperture.copy()
+
+    # Generar m-1 partes de k escenas cada una para el resto del show
+    for _ in range(m-1):
         part = []
-        for j in range(k):
-            scene = [list(animals[x]) for x in range(j * 3, (j + 1) * 3)]
+        for _ in range(k):
+            # Tomar una escena aleatoria de la lista auxiliar y agregarla al resto del show
+            scene = random.choice(aux_aperture)
+            aux_aperture.remove(scene)
             part.append(scene)
+
         rest_of_show.append(part)
 
     return {'m': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show}
@@ -596,7 +626,7 @@ def solution_3 (version):
 
 if __name__ == "__main__":
     solution =3
-    version = 2
+    version = 4
     if(solution == 1):
         if(version == 1):
             solution_1(version1() )

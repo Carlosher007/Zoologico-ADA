@@ -6,69 +6,6 @@ import matplotlib.pyplot as plt
 from tabulate import tabulate
 
 from Solucion_1.ConcertZoo import ConcertZoo
-# ---------------------------- VARIABLES INICIALES --------------------------- #
-
-
-def version1 ():
-  m = 3
-  n = 6
-  k = 2
-
-  animals = {
-    'Ci': 1,
-    'Li': 2,
-    'Ga': 3,
-    'Pe': 4,
-    'Ta': 5,
-    'Nu': 6
-  }
-  aperture = [
-    ['Pe', 'Nu', 'Ta'],
-    ['Ta', 'Pe', 'Ga'],
-    ['Ta', 'Ci', 'Ga'], 
-    ['Ga', 'Li', 'Ci'],
-  ]
-  rest_of_show = [
-    [['Ta', 'Ci', 'Ga'], ['Pe', 'Nu', 'Ta']],
-    [ ['Ta', 'Pe', 'Ga'], ['Ci', 'Li', 'Ga']],
-    ]
-  
-  return { 'm': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show }
-
-def version2 ():
-  m = 4
-  n = 9
-  k = 3
-
-  animals = {
-    'Ca': 1,
-    'Lo': 2,
-    'Cai': 3,
-    'Bo': 4,
-    'Co': 5,
-    'Ce': 6,
-    'Pa': 7,
-    'Ti': 8,
-    'Le': 9,
-  }
-  aperture = [
-    ['Cai', 'Ca', 'Lo'],
-    ['Bo', 'Cai', 'Ca'],
-    ['Co', 'Ca', 'Lo'], 
-    ['Pa', 'Co', 'Lo'],
-    ['Ti', 'Lo', 'Ca'],
-    ['Le', 'Cai', 'Lo'],
-    ['Le', 'Co', 'Bo'],
-    ['Le', 'Pa', 'Ce'],
-    ['Ti', 'Ce', 'Pa'],
-  ]
-  rest_of_show = [
-    [['Cai', 'Ca', 'Lo'], ['Ti', 'Lo', 'Ca'], ['Ti', 'Ce', 'Pa']],
-    [['Pa', 'Co', 'Lo'], ['Le', 'Pa', 'Ce'], ['Co', 'Ca', 'Lo']],
-    [['Bo', 'Cai', 'Ca'], ['Le', 'Cai', 'Lo'], ['Le', 'Co', 'Bo']],
-  ]
-  
-  return { 'm': m, 'n': n, 'k': k, 'animals': animals, 'aperture': aperture, 'rest_of_show': rest_of_show }
 
 def version_generalizada(m, k):
     # n es constante
@@ -139,7 +76,8 @@ def measure_execution_time(versions, function_to_test):
 
 
 def plot_execution_times(versions, function_to_test, times):
-    sizes = [(version['m'] - 1) * version['k'] for version in versions]
+    sizes = [(version['m'] -1) * version['k'] for version in versions]
+    print(sizes)
     times = measure_execution_time(versions, function_to_test)
 
     plt.plot(sizes, times, marker='o', label='Actual Performance')
@@ -163,13 +101,13 @@ def plot_execution_times(versions, function_to_test, times):
 if __name__ == "__main__":
     # Generamos  versiones de prueba con version_prueba, por ahroa solo vamos a viarar m, k se queda igual  a 3
     versions = []
-    m_initial = 2
-    k_initial = 1
+    m_initial = 4
+    k_initial = 3
     
     # funcion para ir agregando versiones, m va avanzando 3 en 3 y n 2 en 2
     for i in range(1, 71):
         versions.append(version_generalizada(m_initial, k_initial))
-        m_initial += 2
+        m_initial += 1
         k_initial += 1
     
     # Funciones que deseas probar
@@ -184,10 +122,11 @@ if __name__ == "__main__":
     ]
 
     # for function in functions_to_test:
-    header = f"Tiempos de la solución para {ConcertZoo.aver.__name__}:"
-    times = measure_execution_time(versions, ConcertZoo.aver)
+    header = f"Tiempos de la solución para {ConcertZoo.average_grandeur.__name__}:"
+    times = measure_execution_time(versions, ConcertZoo.average_grandeur)
     table = tabulate(enumerate(times, start=1), headers=["Ejecución", "Tiempo (s)"], tablefmt="pretty")
     print(f"\n{header}\n{table}")
     
     # Gráfica de tiempos de ejecución
-    plot_execution_times(versions, ConcertZoo.aver, times)
+    plot_execution_times(versions, ConcertZoo.average_grandeur, times)
+

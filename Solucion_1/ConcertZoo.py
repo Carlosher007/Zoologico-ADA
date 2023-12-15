@@ -1,4 +1,5 @@
 import math
+import random
 from Solucion_1.Algorithms_Sol1 import Algorithms, Methods
 
 class ConcertZoo:
@@ -215,6 +216,15 @@ class ConcertZoo:
             int: Máxima grandeza individual en la escena.
         """
         return Methods.max([animals[animal] for animal in scene])
+
+    def random_animal_in_animals(self):
+        """
+        Devuelve un animal aleatorio de la lista de animales.
+
+        Returns:
+            str: Animal aleatorio.
+        """
+        return random.choice(list(self.animals.keys()))
 
     @staticmethod
     def scene_grandness_by_animal(animal, animals):
